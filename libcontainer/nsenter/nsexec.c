@@ -319,7 +319,7 @@ static void update_oom_score_adj(char *data, size_t len)
 		return;
 
 	if (write_file(data, len, "/proc/self/oom_score_adj") < 0) {
-		if (errno != EPERM && errno != EACCESS)
+		if (errno != EPERM && errno != EACCES)
 			bail("failed to update /proc/self/oom_score_adj");
 	}
 
