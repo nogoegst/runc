@@ -318,9 +318,10 @@ static void update_oom_score_adj(char *data, size_t len)
 	if (data == NULL || len <= 0)
 		return;
 
-	if (write_file(data, len, "/proc/self/oom_score_adj") < 0)
-		bail("failed to update /proc/self/oom_score_adj");
-}
+	if (write_file(data, len, "/proc/self/oom_score_adj") < 0) {
+		if (errno != EPERM && errno != EACCESS)
+			bail("failed to update /proc/self/oom_score_adj");
+	}
 
 /* A dummy function that just jumps to the given jumpval. */
 static int child_func(void *arg) __attribute__ ((noinline));
